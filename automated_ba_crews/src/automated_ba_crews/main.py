@@ -29,11 +29,8 @@ def main():
     # Your raw requirement text
     raw_requirement = """
     We need a mobile app for food delivery that allows users to:
-    - Browse restaurants by cuisine type
-    - Place orders with custom instructions
     - Track delivery in real-time
     - Rate and review their experience
-    - Save favorite restaurants for quick reordering
     """
     
     # Execute the iterative workflow
@@ -52,45 +49,11 @@ if __name__ == "__main__":
 
 
 
-
-'''def train():
+"""
+    We need a mobile app for food delivery that allows users to:
+    - Browse restaurants by cuisine type
+    - Place orders with custom instructions
+    - Track delivery in real-time
+    - Rate and review their experience
+    - Save favorite restaurants for quick reordering
     """
-    Train the crew for a given number of iterations.
-    """
-    inputs = {
-        "topic": "AI LLMs",
-        'current_year': str(datetime.now().year)
-    }
-    try:
-        AutomatedBaCrews().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
-
-    except Exception as e:
-        raise Exception(f"An error occurred while training the crew: {e}")
-
-def replay():
-    """
-    Replay the crew execution from a specific task.
-    """
-    try:
-        AutomatedBaCrews().crew().replay(task_id=sys.argv[1])
-
-    except Exception as e:
-        raise Exception(f"An error occurred while replaying the crew: {e}")
-
-def test():
-    """
-    Test the crew execution and returns the results.
-    """
-    inputs = {
-        "topic": "AI LLMs",
-        "current_year": str(datetime.now().year)
-    }
-    
-    try:
-        AutomatedBaCrews().crew().test(n_iterations=int(sys.argv[1]), eval_llm=sys.argv[2], inputs=inputs)
-
-    except Exception as e:
-        raise Exception(f"An error occurred while testing the crew: {e}")
-
-'''
-

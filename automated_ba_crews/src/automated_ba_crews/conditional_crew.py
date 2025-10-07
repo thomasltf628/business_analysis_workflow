@@ -55,17 +55,21 @@ class CustomWorkflow:
             
             # Parse the validation result
             validation_result = self._parse_validation_result(initial_result)
-            print(validation_result.raw)
-            print(validation_result.json_dict)
-            if validation_result.json_dict.get('status') == 'APPROVED':
-                print("✅ Validation passed! Formatting final output...")
-                return self._create_final_output(initial_result)
-            else:
-                print("⚠️  Validation issues found. Routing for refinement...")
-                refinement_agent = self._determine_refinement_agent(validation_result)
-                initial_result = self._execute_refinement(
-                    refinement_agent, initial_result, raw_requirement_text
-                )
+            try:
+                validation_result_json = json.loads(validation_result.raw)
+                print(validation_result_json)
+                if validation_result_json.get('status') == 'APPROVED':
+                    print("✅ Validation passed! Formatting final output...")
+                    return self._create_final_output(initial_result)
+                else:
+                    print("⚠️  Validation issues found. Routing for refinement...")
+                    refinement_agent = self._determine_refinement_agent(validation_result)
+                    initial_result = self._execute_refinement(
+                        refinement_agent, initial_result, raw_requirement_text
+                    )                
+            except json.JSONDecodeError as e:
+                print(f"Fail to vonvert validation result to json: {e}")    
+
         
         print("❌ Maximum iterations reached. Returning current state.")
         return self._create_final_output(initial_result)
@@ -90,7 +94,8 @@ class CustomWorkflow:
     
     def _determine_refinement_agent(self, validation_result):
         """Determine which agent needs to refine based on validation feedback"""
-        feedback = validation_result.json_dict.get('feedback', '').lower()
+        validation_result_json =json.loads(validation_result.raw)
+        feedback = validation_result_json.get('feedback', '').lower()
         
         if any(term in feedback for term in ['user story', 'story', 'as a']):
             print("🔄 Routing to User Story Generator for refinement")
@@ -108,6 +113,7 @@ class CustomWorkflow:
     def _execute_refinement(self, refinement_agent, previous_result, raw_requirement_text):
         """Execute refinement with the specified agent"""
         # Create refinement task based on the agent type
+        print(f'{refinement_agent}')
         if refinement_agent.role == "User Story Generator":
             refinement_task = Task(
                 description=f"""

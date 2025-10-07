@@ -4,10 +4,11 @@ import warnings
 
 from datetime import datetime
 
-from automated_ba_crews.crew import AutomatedBaCrews
+from crewai import Crew, Process
+from ba_agents import BaAgents
+from ba_tasks import BaTasks
+from conditional_crew import CustomWorkflow
 from dotenv import load_dotenv
-from automated_ba_crews.src.automated_ba_crews.ba_agents import BaAgents
-from automated_ba_crews.src.automated_ba_crews.ba_tasks import BaTasks
 load_dotenv()
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
@@ -17,39 +18,35 @@ warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 # Replace with inputs you want to test with, it will automatically
 # interpolate any tasks and agents information
 
-class BaWorkflow:  
-    def __init__(self):
-        pass
+def main():
+    # Initialize agents and tasks
+    ba_agents = BaAgents()
+    ba_tasks = BaTasks()
+    
+    # Create custom workflow
+    workflow = CustomWorkflow(ba_agents, ba_tasks)
+    
+    # Your raw requirement text
+    raw_requirement = """
+    We need a mobile app for food delivery that allows users to:
+    - Browse restaurants by cuisine type
+    - Place orders with custom instructions
+    - Track delivery in real-time
+    - Rate and review their experience
+    - Save favorite restaurants for quick reordering
+    """
+    
+    # Execute the iterative workflow
+    print("🎯 Starting NoteGPT Requirements Processing Workflow...")
+    final_result = workflow.create_iterative_workflow(raw_requirement)
+    
+    print("\n🎉 FINAL RESULT:")
+    print("=" * 50)
+    print(final_result)
+    print("=" * 50)
 
-    def run(self):
-        agents = BaAgents()
-        tasks = BaTasks()
-
-        requirement_parser = agents.get_agent('requirement_parser')
-        user_story_generator = agents.get_agent('user_story_generator')
-        acceptance_criteria_generator = agents.get_agent('acceptance_criteria_generator')
-        requirement_classifier = agents.get_agent('requirement_classifier')
-        validator_and_refiner = agents.get_agent('validator_and_refiner')
-        workflow_router = agents.get_agent('workflow_router')
-        output_formatter = agents.get_agent('output_formatter')
-        
-        parse_requirement = tasks.get_task('parse_requirement')
-        generate_stories =  tasks.get_task('generate_stories')
-        add_acceptance_criteria = tasks.get_task('add_acceptance_criteria')
-        classify_stories = tasks.get_task('classify_stories')
-        validate_artifacts = tasks.get_task('validate_artifacts')
-        format_final_output = tasks.get_task('format_final_output')
-
-        
-        """inputs = {
-            'topic': 'AI LLMs',
-            'current_year': str(datetime.now().year)
-        }"""
-        
-        """try:
-            AutomatedBaCrews().crew().kickoff(inputs=inputs)
-        except Exception as e:
-            raise Exception(f"An error occurred while running the crew: {e}")"""
+if __name__ == "__main__":
+    main()
 
 
 
@@ -96,3 +93,4 @@ def test():
         raise Exception(f"An error occurred while testing the crew: {e}")
 
 '''
+

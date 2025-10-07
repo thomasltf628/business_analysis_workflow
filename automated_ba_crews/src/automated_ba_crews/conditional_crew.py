@@ -55,8 +55,9 @@ class CustomWorkflow:
             
             # Parse the validation result
             validation_result = self._parse_validation_result(initial_result)
-            
-            if validation_result.get('status') == 'APPROVED':
+            print(validation_result.raw)
+            print(validation_result.json_dict)
+            if validation_result.json_dict.get('status') == 'APPROVED':
                 print("✅ Validation passed! Formatting final output...")
                 return self._create_final_output(initial_result)
             else:
@@ -89,7 +90,7 @@ class CustomWorkflow:
     
     def _determine_refinement_agent(self, validation_result):
         """Determine which agent needs to refine based on validation feedback"""
-        feedback = validation_result.get('feedback', '').lower()
+        feedback = validation_result.json_dict.get('feedback', '').lower()
         
         if any(term in feedback for term in ['user story', 'story', 'as a']):
             print("🔄 Routing to User Story Generator for refinement")

@@ -1,0 +1,21 @@
+# better model, limitation of current model
+
+Doesn't support picture upload, small
+
+# Advantage of crewai
+
+# decision on allow_delegation
+
+Requirement Parser: prevent from format lost
+User Story Generator: Require collabrative refinement
+Requirement Classifier and Acceptance Criteria: strict rule, should consist no incinsistence
+Validator and Refiner: Orchestrator require cross team context
+
+# More actual agent/components in practice?
+
+Input Aggregator Agent (From multiple source, use slack/ email/ web form mcp server)
+Final mcp to create tickets
+→ UI/UX Spec Agent (interface details)
+→ Technical Spec Agent (system details)
+→ **JIRA TICKET CREATOR AGENT** + MCP
+RAG (chunk the existing system to vector db)

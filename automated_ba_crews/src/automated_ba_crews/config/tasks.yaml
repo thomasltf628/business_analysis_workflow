@@ -1,3 +1,85 @@
+parse_requirement:
+  description: >
+    Analyze the initial, unstructured plain English requirement text: "{raw_requirement_text}".
+    Extract and structure the core components, including actors, their primary goals,
+    and any explicit constraints or business rules.
+  expected_output: >
+    A structured text document or JSON object containing the parsed elements
+    (e.g., actors, goals, constraints).
+  agent: requirement_parser
+
+# Task 2: Story Generation
+generate_stories:
+  description: >
+    Using the structured components from the parsing task, formulate clear and concise user stories.
+    Each story must follow the standard "As a [who], I want [what], so that [why]" format.
+  expected_output: >
+    A list of well-formed user stories in plain text.
+  agent: user_story_generator
+  context:
+    - parse_requirement
+
+# Task 3: Criteria Generation
+add_acceptance_criteria:
+  description: >
+    For each user story provided, develop a set of precise and testable acceptance criteria.
+    The criteria should unambiguously define the conditions of completion, preferably in a
+    'Given-When-Then' format or a simple checklist.
+  expected_output: >
+    The list of user stories, each appended with its corresponding acceptance criteria.
+  agent: acceptance_criteria_generator
+  context:
+    - generate_stories
+
+# Task 4: Classification
+classify_stories:
+  description: >
+    Analyze each user story and its acceptance criteria. Categorize each story as either
+    'Functional' or 'Non-Functional' and add this classification as metadata.
+  expected_output: >
+    The list of user stories, each with its acceptance criteria and a final
+    classification label.
+  agent: requirement_classifier
+  context:
+    - add_acceptance_criteria
+
+# Task 5: Validation and Final Review
+validate_artifacts:
+  description: >
+    Conduct a final quality review of the user stories, criteria, and classifications.
+    Check for clarity, consistency, and testability. Based on your review, you must
+    conclude with a status.
+  expected_output: >
+    A structured report in JSON format with two keys:
+    1. 'status': Must be either "APPROVED" or "REVISION_NEEDED".
+    2. 'feedback': If revision is needed, provide specific, actionable feedback and
+        pinpoint which part (e.g., 'User Story' or 'Acceptance Criteria') is flawed.
+        If approved, this can be a simple "All checks passed."
+  agent: validator_and_refiner
+  context:
+    - classify_stories
+
+# Task 6: Final Output Formatting (runs on success)
+format_final_output:
+  description: >
+    Take the final, approved set of user stories and all their associated data
+    (acceptance criteria, classification). Format this information into a single,
+    clean, well-structured JSON object.
+  expected_output: >
+    A single JSON string representing a list of user story objects, ready for
+    delivery or storage.
+  agent: output_formatter
+  context:
+    - validate_artifacts
+
+
+
+
+
+
+
+
+
 research_task:
   description: >
     Conduct a thorough research about {topic}

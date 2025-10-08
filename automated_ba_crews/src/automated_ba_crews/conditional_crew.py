@@ -92,9 +92,13 @@ class CustomWorkflow:
         feedback = validation_json.get('feedback', '')
         print(f"🔬 Refinement Feedback: {feedback}") # A list of dict
         feedback_str = ""
-        for issue in feedback:
-            temp_list_for_each_issue = ['{' + key + ':' + value + '}' for key,value in issue.items()]
-            feedback_str += ",".join(temp_list_for_each_issue)
+        try:
+            for issue in feedback:
+                temp_list_for_each_issue = ['{' + key + ':' + value + '}' for key,value in issue.items()]
+                feedback_str += ",".join(temp_list_for_each_issue)
+        except AttributeError as e:
+            print(e, "attempting conversion to str")
+            feedback_str = str(feedback)
             
         if any(term in feedback_str.lower() for term in ['user story', 'story', 'as a']):
             print("🔄 Routing to User Story Generator for refinement.")

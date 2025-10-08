@@ -16,7 +16,7 @@ parse_requirement:
 
 generate_stories:
   description: |
-    Using the structured requirements below, create a set of user stories. Each story must follow the standard format: "As a [type of user], I want [an action], so that [a benefit]."
+    Using the structured requirements below, create a set of user stories. Each story must follow the standard json format: as a [type of user], I want [an action], so that [a benefit]."
 
     Structured Requirement:
     ---
@@ -28,9 +28,11 @@ generate_stories:
 
 add_acceptance_criteria:
   description: |
-    For each user story provided below, write detailed and testable acceptance criteria. Use the "Given-When-Then" format for each criterion to ensure clarity.
-
-    User Stories:
+    Analyze the raw business requirement text below. Your goal is to extract and structure the information into three distinct sections:
+    1.  **Key Features**: A bulleted list of specific functionalities mentioned .
+    2.  **Core Goals**: A brief summary of the overall business objective .
+    3.  **Constraints & Non-Functional Requirements**: A bulleted list of any mentioned limitations or quality attributes .
+    Raw Requirement:
     ---
     {context}
     ---

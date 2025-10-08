@@ -22,7 +22,7 @@ class BaAgents():
             role='User Story Generator',
             goal='To create well-formed user stories from structured requirements, following the "As a [user], I want [goal], so that [reason]" format.',
             backstory='A seasoned Agile practitioner who excels at stepping into the user\'s shoes to articulate their needs and motivations clearly.',
-            allow_delegation=True,
+            allow_delegation=False,
             verbose=True
         )
 
@@ -51,7 +51,7 @@ class BaAgents():
             goal='To critically review all generated artifacts (user stories, criteria, classifications) for clarity, consistency, and completeness, and provide actionable feedback for refinement.',
             backstory='A lead business analyst with years of experience, acting as the final quality gate. This agent ensures that the requirements are coherent and ready for the development team.',
 
-            allow_delegation=True,
+            allow_delegation=False,
             verbose=True
         )
 

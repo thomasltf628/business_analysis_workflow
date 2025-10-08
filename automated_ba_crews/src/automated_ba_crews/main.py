@@ -9,15 +9,13 @@ def main():
 
     # --- Input Requirement ---
     # This is the raw business requirement text that will be processed.
-    raw_requirement_text = """
-    We are building a new feature for our e-commerce platform called "Wishlist".
-    A user should be able to add products to their personal wishlist.
-    They should also be able to view their wishlist and remove items from it.
-    The wishlist needs to be saved to their account so they can see it
-    when they log in again later. We also want to eventually add a "share wishlist"
-    feature, but that's for a future release. For now, just focus on the core
-    add, view, and remove functionality. The system must also be secure and
-    ensure that users can only see their own wishlists.
+    raw_requirement_text =  """
+    We need a mobile app for food delivery that allows users to:
+    - Browse restaurants by cuisine type
+    - Place orders with custom instructions
+    - Track delivery in real-time
+    - Rate and review their experience
+    - Save favorite restaurants for quick reordering
     """
 
     print("===============================================")
@@ -54,11 +52,22 @@ if __name__ == "__main__":
 
 
 
-"""
+    """
     We need a mobile app for food delivery that allows users to:
     - Browse restaurants by cuisine type
     - Place orders with custom instructions
     - Track delivery in real-time
     - Rate and review their experience
     - Save favorite restaurants for quick reordering
+    """
+
+    """
+    We are building a new feature for our e-commerce platform called "Wishlist".
+    A user should be able to add products to their personal wishlist.
+    They should also be able to view their wishlist and remove items from it.
+    The wishlist needs to be saved to their account so they can see it
+    when they log in again later. We also want to eventually add a "share wishlist"
+    feature, but that's for a future release. For now, just focus on the core
+    add, view, and remove functionality. The system must also be secure and
+    ensure that users can only see their own wishlists.
     """

@@ -6,10 +6,7 @@ Doesn't support picture upload, small
 
 # decision on allow_delegation
 
-Requirement Parser: prevent from format lost
-User Story Generator: Require collabrative refinement
-Requirement Classifier and Acceptance Criteria: strict rule, should consist no incinsistence
-Validator and Refiner: Orchestrator require cross team context
+The task flow is unambigrious, no requirement of passing the task back and for
 
 # More actual agent/components in practice?
 
@@ -19,3 +16,4 @@ Final mcp to create tickets
 → Technical Spec Agent (system details)
 → **JIRA TICKET CREATOR AGENT** + MCP
 RAG (chunk the existing system to vector db)
+

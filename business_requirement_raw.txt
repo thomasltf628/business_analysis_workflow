@@ -1,0 +1,6 @@
+    We need a mobile app for food delivery that allows users to:
+    - Browse restaurants by cuisine type
+    - Place orders with custom instructions
+    - Track delivery in real-time
+    - Rate and review their experience
+    - Save favorite restaurants for quick reordering

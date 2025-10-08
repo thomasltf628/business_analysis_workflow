@@ -6,7 +6,6 @@ load_dotenv()
 
 
 def main():
-
     # --- Input Requirement ---
     # This is the raw business requirement text that will be processed.
     raw_requirement_text_file =  input("Please enter the file path: ")
@@ -39,7 +38,11 @@ def main():
 
     try:
         # Try to parse and pretty-print the JSON
-        final_json = json.loads(final_result_str)
+        start_index = final_result_str.find('[') # Make sure the str start and end with []
+        end_index = final_result_str.rfind(']')
+        final_json_str_array = final_result_str[start_index:end_index + 1]
+
+        final_json = json.loads(final_json_str_array)
         print(json.dumps(final_json, indent=2))
     except (json.JSONDecodeError, TypeError):
         print("Could not parse the final output as JSON. Displaying raw output:")
@@ -74,5 +77,7 @@ if __name__ == "__main__":
     """
 
     """
-    I want the creation of event on calender could be shared with a specific gorup in my organization with invitation
+    I want the creation of event on calender could be shared with a specific gorup in my organization with invitation, minimal functionality is fine
     """
+
+    

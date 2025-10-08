@@ -1,99 +1,81 @@
+# Configuration for all tasks in the workflow.
+# The {context} and {feedback} placeholders will be filled in dynamically.
+
 parse_requirement:
-  description: >
-    Analyze the initial, unstructured plain English requirement text: "{raw_requirement_text}".
-    Extract and structure the core components, including actors, their primary goals,
-    and any explicit constraints or business rules.
-  expected_output: >
-    A structured text document or JSON object containing the parsed elements
-    (e.g., actors, goals, constraints).
-  agent: requirement_parser
+  description: |
+    Analyze the following raw business requirement text and break it down into a structured list of key features, goals, and constraints.
+    Focus on extracting clear, actionable items.
 
-# Task 2: Story Generation
+    Raw Requirement:
+    ---
+    {context}
+    ---
+    {feedback_section}
+  expected_output: "A structured markdown document outlining the core components of the requirement."
+  agent: "requirement_parser"
+
 generate_stories:
-  description: >
-    Using the structured components from the parsing task, formulate clear and concise user stories.
-    Each story must follow the standard "As a [who], I want [what], so that [why]" format.
-  expected_output: >
-    A list of well-formed user stories in plain text.
-  agent: user_story_generator
-  context:
-    - parse_requirement
+  description: |
+    Using the structured requirements below, create a set of user stories. Each story must follow the standard format: "As a [type of user], I want [an action], so that [a benefit]."
 
-# Task 3: Criteria Generation
+    Structured Requirement:
+    ---
+    {context}
+    ---
+    {feedback_section}
+  expected_output: "A JSON object containing a list of user stories."
+  agent: "user_story_generator"
+
 add_acceptance_criteria:
-  description: >
-    For each user story provided, develop a set of precise and testable acceptance criteria.
-    The criteria should unambiguously define the conditions of completion, preferably in a
-    'Given-When-Then' format or a simple checklist.
-  expected_output: >
-    The list of user stories, each appended with its corresponding acceptance criteria.
-  agent: acceptance_criteria_generator
-  context:
-    - generate_stories
+  description: |
+    For each user story provided below, write detailed and testable acceptance criteria. Use the "Given-When-Then" format for each criterion to ensure clarity.
 
-# Task 4: Classification
+    User Stories:
+    ---
+    {context}
+    ---
+    {feedback_section}
+  expected_output: "The original JSON of user stories, with a new key 'acceptance_criteria' added to each story object, containing a list of criteria strings."
+  agent: "acceptance_criteria_generator"
+
 classify_stories:
-  description: >
-    Analyze each user story and its acceptance criteria. Categorize each story as either
-    'Functional' or 'Non-Functional' and add this classification as metadata.
-  expected_output: >
-    The list of user stories, each with its acceptance criteria and a final
-    classification label.
-  agent: requirement_classifier
-  context:
-    - add_acceptance_criteria
+  description: |
+    Review the user stories and their acceptance criteria below. Classify each user story as either 'Functional' or 'Non-Functional'.
 
-# Task 5: Validation and Final Review
+    Stories with Criteria:
+    ---
+    {context}
+    ---
+    {feedback_section}
+  expected_output: "The original JSON of user stories, with a new key 'classification' added to each story object, with the value being either 'Functional' or 'Non-Functional'."
+  agent: "requirement_classifier"
+
 validate_artifacts:
-  description: >
-    Conduct a final quality review of the user stories, criteria, and classifications.
-    Check for clarity, consistency, and testability. Based on your review, you must
-    conclude with a status.
-  expected_output: >
-    A structured report in JSON format with two keys:
-    1. 'status': Must be either "APPROVED" or "REVISION_NEEDED".
-    2. 'feedback': If revision is needed, provide specific, actionable feedback and
-        pinpoint which part (e.g., 'User Story' or 'Acceptance Criteria') is flawed.
-        If approved, this can be a simple "All checks passed."
-  agent: validator_and_refiner
-  context:
-    - classify_stories
+  description: |
+    Thoroughly review the complete set of generated artifacts below for quality, completeness, and consistency.
+    Check for:
+    1.  Clarity: Are the stories and criteria easy to understand?
+    2.  Consistency: Do the artifacts align with each other and the original goal?
+    3.  Completeness: Are there any obvious gaps or missing details?
+    4.  Correctness: Is the format of stories and criteria correct? Is the classification accurate?
 
-# Task 6: Final Output Formatting (runs on success)
+    If everything is perfect, respond with a JSON object with a 'status' of 'APPROVED'.
+    If there are issues, respond with a JSON object with a 'status' of 'REVISION_NEEDED' and provide clear, specific 'feedback' on what needs to be fixed and which role is responsible (e.g., 'The user story about payments is unclear' or 'The acceptance criteria for login is missing an edge case').
+
+    Artifacts to Validate:
+    ---
+    {context}
+    ---
+  expected_output: "A single JSON object with a 'status' key ('APPROVED' or 'REVISION_NEEDED') and an optional 'feedback' key."
+  agent: "validator_and_refiner"
+
 format_final_output:
-  description: >
-    Take the final, approved set of user stories and all their associated data
-    (acceptance criteria, classification). Format this information into a single,
-    clean, well-structured JSON object.
-  expected_output: >
-    A single JSON string representing a list of user story objects, ready for
-    delivery or storage.
-  agent: output_formatter
-  context:
-    - validate_artifacts
+  description: |
+    Consolidate the approved and finalized artifacts below into a single, clean JSON string. The output should be a list of user story objects, where each object contains the story, its acceptance criteria, and its classification. Ensure the JSON is well-formatted.
 
-
-
-
-
-
-
-
-
-research_task:
-  description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
-  expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
-
-reporting_task:
-  description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
-  expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    Final Artifacts:
+    ---
+    {context}
+    ---
+  expected_output: "A single, clean JSON string representing the list of finalized user story objects."
+  agent: "output_formatter"

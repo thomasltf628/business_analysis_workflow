@@ -1,4 +1,4 @@
-import os
+import sys
 import json
 from conditional_crew import CustomWorkflow
 from dotenv import load_dotenv
@@ -9,15 +9,16 @@ def main():
 
     # --- Input Requirement ---
     # This is the raw business requirement text that will be processed.
-    raw_requirement_text =  """
-    We need a mobile app for food delivery that allows users to:
-    - Browse restaurants by cuisine type
-    - Place orders with custom instructions
-    - Track delivery in real-time
-    - Rate and review their experience
-    - Save favorite restaurants for quick reordering
-    """
-
+    raw_requirement_text_file =  input("Please enter the file path: ")
+    try:
+        with open(raw_requirement_text_file, 'r', encoding='utf-8') as file:
+            raw_requirement_text = file.read()
+    except FileNotFoundError:
+        print("Error: File not found!")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error reading file: {e}")
+        sys.exit(1)
     print("===============================================")
     print("      Automated Business Analyst Agent      ")
     print("===============================================")
@@ -70,4 +71,8 @@ if __name__ == "__main__":
     feature, but that's for a future release. For now, just focus on the core
     add, view, and remove functionality. The system must also be secure and
     ensure that users can only see their own wishlists.
+    """
+
+    """
+    I want the creation of event on calender could be shared with a specific gorup in my organization with invitation
     """

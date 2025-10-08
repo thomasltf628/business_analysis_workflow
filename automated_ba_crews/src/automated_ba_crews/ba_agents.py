@@ -1,5 +1,4 @@
 from crewai import Agent
-from langchain_openai import ChatOpenAI
 
 # Initialize the LLM you'll use for the agents
 

@@ -16,4 +16,6 @@ Final mcp to create tickets
 → Technical Spec Agent (system details)
 → **JIRA TICKET CREATOR AGENT** + MCP
 RAG (chunk the existing system to vector db)
+parallel for each user story
 
+Even if the current progress

@@ -39,6 +39,9 @@ class CustomWorkflow:
                     print("✅ Validation Passed! Workflow complete.")
                     return self._create_final_output(workflow_artifacts['classified_stories'])
                 else:
+                    if iteration_count == self.max_iterations:
+                        print("Maximum iterations reached, exit with refinement needed result")
+                        break
                     print("⚠️ Validation issues found. Initiating refinement process...")
                     workflow_artifacts = self._execute_refinement_loop(validation_json, workflow_artifacts)
 

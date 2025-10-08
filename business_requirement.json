@@ -1,0 +1,82 @@
+[
+  {
+    "user_story": {
+      "as_a": "customer",
+      "i_want": "to browse restaurants by different cuisine types",
+      "so_that": "I can easily find food options that match my taste preferences",
+      "acceptance_criteria": [
+        "The app displays a list of available cuisines.",
+        "Users can filter restaurants by cuisine type, such as Italian, Chinese, and Mexican.",
+        "Users can sort restaurants by rating, distance, or average delivery time."
+      ],
+      "classification": "Functional"
+    }
+  },
+  {
+    "user_story": {
+      "as_a": "customer",
+      "i_want": "to place orders with custom instructions",
+      "so_that": "I can tailor my meal to my exact liking",
+      "acceptance_criteria": [
+        "Users can input special instructions for each item before placing an order.",
+        "There is a character limit of 250 for special instructions.",
+        "The app displays an error message if instructions are too vague or inappropriate."
+      ],
+      "classification": "Functional"
+    }
+  },
+  {
+    "user_story": {
+      "as_a": "customer",
+      "i_want": "to track my food delivery in real-time",
+      "so_that": "I can know exactly when to expect my order",
+      "acceptance_criteria": [
+        "The app provides a live tracking map showing the delivery path.",
+        "Users receive notifications for any delays or cancellations of their orders.",
+        "If the order is delivered, the status updates to 'Delivered' with a timestamp.",
+        "If the tracking is unavailable, users receive a notification explaining the issue."
+      ],
+      "classification": "Functional"
+    }
+  },
+  {
+    "user_story": {
+      "as_a": "customer",
+      "i_want": "to rate my delivery experience",
+      "so_that": "I can provide feedback and help improve services",
+      "acceptance_criteria": [
+        "The app allows users to give a rating on a scale of 1 to 5 after receiving their order.",
+        "Users are prompted for a review after rating, with guidelines displayed for compliance.",
+        "Review guidelines appear in a pop-up after submitting a rating, detailing acceptable content.",
+        "Users are only prompted for a review once per order."
+      ],
+      "classification": "Functional"
+    }
+  },
+  {
+    "user_story": {
+      "as_a": "customer",
+      "i_want": "to leave reviews for restaurants",
+      "so_that": "I can share my experiences with other users",
+      "acceptance_criteria": [
+        "Users can navigate to a restaurant's page after an order is completed.",
+        "An option to leave a review is clearly visible on the restaurant's page.",
+        "Users must be logged in to leave a review to ensure accountability."
+      ],
+      "classification": "Functional"
+    }
+  },
+  {
+    "user_story": {
+      "as_a": "customer",
+      "i_want": "to save my favorite restaurants for quick reordering",
+      "so_that": "I can easily access my go-to food options",
+      "acceptance_criteria": [
+        "Users can mark a restaurant as a favorite through a dedicated button.",
+        "A favorites section is available on the main menu to quickly view saved restaurants.",
+        "If a user tries to save a restaurant without being logged in, the app prompts them to log in or create an account."
+      ],
+      "classification": "Functional"
+    }
+  }
+]

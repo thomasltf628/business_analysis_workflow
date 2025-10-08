@@ -44,9 +44,13 @@ def main():
 
         final_json = json.loads(final_json_str_array)
         print(json.dumps(final_json, indent=2))
+        with open('business_requirement.json', 'w') as f:
+            json.dump(final_json, f, indent=2)
     except (json.JSONDecodeError, TypeError):
         print("Could not parse the final output as JSON. Displaying raw output:")
         print(final_result_str)
+        with open('business_requirement.txt', 'w') as f:
+            f.write(final_json)
 
 if __name__ == "__main__":
     main()

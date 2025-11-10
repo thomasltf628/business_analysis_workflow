@@ -1,66 +1,82 @@
 [
   {
-    "as_a": "User",
-    "i_want": "to browse a list of restaurants",
-    "so_that": "I can find a suitable place to order food from",
+    "user_story": "As a compliance officer, I want to implement real-time monitoring for CTR compliance so that I can generate automated reports for transactions exceeding the threshold of $10,000 within the required reporting timeframe.",
     "acceptance_criteria": [
-      "The list of restaurants is displayed on the app interface.",
-      "Users can filter restaurants by cuisine type."
+      "Given the system is monitoring transactions, When a transaction exceeds $10,000, Then the system should log the transaction for CTR compliance and initiate report generation.",
+      "Given that a transaction exceeding $10,000 occurs, When the transaction is recorded, Then the report should be generated and stored within a period of 24 hours."
     ],
     "classification": "Functional"
   },
   {
-    "as_a": "User",
-    "i_want": "to place an order by selecting items from the menu",
-    "so_that": "I can get my desired food delivered to me",
+    "user_story": "As a compliance officer, I want to automate SAR generation based on transaction values over $5,000 for suspicious activity and trigger alerts for transactions over $2,000 to ensure timely filings in line with regulatory requirements.",
     "acceptance_criteria": [
-      "Users can view a menu of items offered by a restaurant.",
-      "Users can add items to their cart.",
-      "Users can provide custom instructions for their orders and receive a notification if their instructions exceed character limits before submission."
+      "Given a transaction of more than $5,000 is identified as suspicious, When the transaction is processed, Then the system automatically generates a SAR and saves it in the secure repository.",
+      "Given a transaction over $2,000 occurs, When this transaction is logged, Then an alert should be triggered and a notification sent to the compliance officer within 5 minutes."
     ],
     "classification": "Functional"
   },
   {
-    "as_a": "User",
-    "i_want": "to track my delivery status in real-time",
-    "so_that": "I can know when to expect my food",
+    "user_story": "As a compliance officer, I want to integrate OFAC sanctions screening via RESTful APIs so that I can perform real-time checks and ensure compliance with sanctions regulations, with a fallback process in place should the API fail to respond within the defined time limits.",
     "acceptance_criteria": [
-      "Users can view the delivery status on the app.",
-      "The delivery status updates every minute.",
-      "The app must function effectively, requiring reliable GPS and network connectivity."
+      "Given the system performs a sanctions screening via the OFAC RESTful API, When an API call is made, Then the system should complete the check within 2 seconds.",
+      "Given an API failure occurs, When the response is not received within 2 seconds, Then the system should trigger a fallback process that checks an alternative database for sanctions compliance."
+    ],
+    "classification": "Functional"
+  },
+  {
+    "user_story": "As a data manager, I want to ensure that the reporting system adheres to the FinCEN BSA E-Filing System XML schema so that the automatic generation and submission of regulatory reports (CTR, SAR) comply with the latest regulatory guidelines.",
+    "acceptance_criteria": [
+      "Given the reporting system generates a CTR or SAR report, When the report is created, Then it must validate against the FinCEN BSA E-Filing System XML schema with no errors.",
+      "Given a report submission attempt, When the report is submitted, Then the system should receive a confirmation response from the FinCEN system that validates successful submission compliance."
     ],
     "classification": "Non-Functional"
   },
   {
-    "as_a": "User",
-    "i_want": "to rate and review my experience after delivery",
-    "so_that": "I can provide feedback to help improve the service",
+    "user_story": "As a data manager, I want to implement GDPR-compliant data retention policies, including automated purging after 5-7 years with exceptions allowing retention up to 10 years for certain compliance records, so that we meet regulatory standards for data handling.",
     "acceptance_criteria": [
-      "Users can provide a rating for the overall experience.",
-      "Users can write a review from a text box.",
-      "User data privacy must be maintained, and content moderation must be in place for reviews."
+      "Given the data retention policy is active, When a record is older than 7 years, Then the system should automatically purge reports unless they fall under the specified exceptions which warrant retention for up to 10 years.",
+      "Given records categorized for exception retention, When the 10-year limit is reached, Then those records should be flagged for manual review before purging."
+    ],
+    "classification": "Non-Functional"
+  },
+  {
+    "user_story": "As an auditor, I want to maintain effective audit trails and documentation management within the compliance reporting system so that we can ensure that every compliance action is logged accurately and is retrievable for future reference.",
+    "acceptance_criteria": [
+      "Given a compliance action occurs, When the action is completed, Then the system should log the action with a timestamp and user information in the audit trail.",
+      "Given the need to retrieve a log, When a user requests access to the documentation, Then the system should allow retrieval of any compliance action logs within the last 7 years."
     ],
     "classification": "Functional"
   },
   {
-    "as_a": "User",
-    "i_want": "to save my favorite restaurants",
-    "so_that": "I can easily access them for future orders",
+    "user_story": "As a systems integrator, I want to implement data quality and integration validation rules so that the compliance reporting system meets industry best practices and can recover effectively from integration failures.",
     "acceptance_criteria": [
-      "Users can mark restaurants as favorites.",
-      "Users can access their list of favorite restaurants quickly.",
-      "Users should be able to unsave a restaurant from their favorites list at any time."
+      "Given data input into the compliance reporting system, When validation rules are applied, Then the system should flag any discrepancies or deviations from the defined data quality standards.",
+      "Given an integration failure is detected, When the failure is processed, Then the system should trigger a retry mechanism within 30 seconds before logging the failure permanently."
     ],
     "classification": "Functional"
   },
   {
-    "as_a": "User",
-    "i_want": "to quickly reorder from my saved favorites",
-    "so_that": "I can save time when ordering food",
+    "user_story": "As a risk analyst, I want to enhance customer risk profiling mechanisms based on industry-standard practices so that I can effectively assess the risk levels associated with high-value transactions.",
     "acceptance_criteria": [
-      "Users can select a favorite restaurant to make an order.",
-      "Users are directed to the menu of the saved favorite restaurant upon selection."
+      "Given a high-value transaction occurs, When risk profiling is conducted, Then the system should assign a risk score based on established industry metrics and thresholds.",
+      "Given updated risk profiles, When the profile is altered due to new data, Then the system should re-evaluate existing transactions concerning their risk levels every 24 hours."
     ],
     "classification": "Functional"
+  },
+  {
+    "user_story": "As a systems architect, I want to ensure that the compliance reporting system leverages end-to-end encryption standards, such as AES encryption, for sensitive data so that we meet security compliance requirements and protect confidential information.",
+    "acceptance_criteria": [
+      "Given sensitive data is being transmitted, When the data is transferred, Then it must be encrypted using AES-256 encryption standards.",
+      "Given stored sensitive data, When a user accesses the data, Then it should be decrypted using securely managed encryption keys that comply with security standards."
+    ],
+    "classification": "Non-Functional"
+  },
+  {
+    "user_story": "As a compliance officer, I want to implement a flexible rules engine that can adapt to changing regulatory demands so that our compliance reporting system remains current and responsive to new requirements.",
+    "acceptance_criteria": [
+      "Given new regulatory requirements are published, When the rules engine is updated, Then the compliance reporting system should reflect the changes within 72 hours between revisions.",
+      "Given existing rules in the system, When a rule is modified, Then it should retain a version history for audit purposes with timestamps of changes."
+    ],
+    "classification": "Non-Functional"
   }
 ]

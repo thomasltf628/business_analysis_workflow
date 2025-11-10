@@ -1,12 +1,14 @@
 from crewai import Task
 import yaml
 from ba_agents import BaAgents # Use relative import
+import os
 
 class BaTasks():
     def __init__(self):
         # Correctly load the YAML config relative to the file's location if needed
         # For this example, assuming a flat structure or correct PYTHONPATH
-        with open(r'automated_ba_crews/src/automated_ba_crews/config/tasks.yaml', 'r') as file:
+        config_path = os.path.join(os.path.dirname(__file__), 'config', 'tasks_enhanced.yaml')
+        with open(config_path, 'r', encoding='utf-8') as file:
             self.config = yaml.safe_load(file)
         self.agents = BaAgents()
 

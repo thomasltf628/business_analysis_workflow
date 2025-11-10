@@ -1,0 +1,112 @@
+# Enhanced Configuration for all tasks in the workflow with MCP awareness.
+# The {context} and {feedback} placeholders will be filled in dynamically.
+
+parse_requirement:
+  description: |
+    Analyze the following raw business requirement text and break it down into a structured list of key features, goals, and constraints.
+    Focus on extracting clear, actionable items.
+    
+    IMPORTANT: If the context includes "Additional Context Gathered" or "Enriched Business Requirement" sections, 
+    pay special attention to that information as it contains current, real-world data fetched specifically for this requirement.
+
+    Raw Requirement:
+    ---
+    {context}
+    ---
+    {feedback_section}
+  expected_output: "A structured markdown document outlining the core components of the requirement."
+  agent: "requirement_parser"
+
+generate_stories:
+  description: |
+    Using the structured requirements below, create a set of user stories. Each story must follow the standard json format: as a [type of user], I want [an action], so that [a benefit]."
+    
+    IMPORTANT: If the context includes specific regulations, thresholds, API versions, or industry standards from external sources,
+    incorporate these EXACT values into your user stories. For example:
+    - If a compliance threshold is mentioned (e.g., "$10,000 for CTR filing"), use that exact value
+    - If an API version is specified (e.g., "SWIFT MT 103"), reference that specific version
+    - If a regulation is cited (e.g., "GDPR Article 5"), include that citation
+
+    Structured Requirement:
+    ---
+    {context}
+    ---
+    {feedback_section}
+  expected_output: "A JSON object containing a list of user stories with accurate, current information from the provided context."
+  agent: "user_story_generator"
+
+add_acceptance_criteria:
+  description: |
+    For each user story below, add detailed acceptance criteria using the "Given-When-Then" format.
+    
+    IMPORTANT: If the context includes external information about:
+    - Regulatory requirements → Ensure criteria test compliance with those specific regulations
+    - Technical specifications → Ensure criteria verify adherence to those exact specs
+    - Industry standards → Ensure criteria validate conformance to those standards
+    - Threshold values → Ensure criteria test the exact thresholds mentioned
+    
+    Make your acceptance criteria testable and specific, using the actual values and requirements from the context.
+
+    User Stories:
+    ---
+    {context}
+    ---
+    {feedback_section}
+  expected_output: "The original JSON of user stories, with a new key 'acceptance_criteria' added to each story object, containing a list of detailed, testable criteria strings."
+  agent: "acceptance_criteria_generator"
+
+classify_stories:
+  description: |
+    Review the user stories and their acceptance criteria below. Classify each user story as either 'Functional' or 'Non-Functional'.
+    
+    Guidelines:
+    - Functional: What the system does (features, capabilities, business logic)
+    - Non-Functional: How the system performs (performance, security, compliance, scalability)
+    
+    Note: Compliance and regulatory requirements are typically Non-Functional, even if they affect features.
+
+    Stories with Criteria:
+    ---
+    {context}
+    ---
+    {feedback_section}
+  expected_output: "The original JSON of user stories, with a new key 'classification' added to each story object, with the value being either 'Functional' or 'Non-Functional'."
+  agent: "requirement_classifier"
+
+validate_artifacts:
+  description: |
+    Thoroughly review the complete set of generated artifacts below for quality, completeness, and consistency.
+    Check for:
+    1.  Clarity: Are the stories and criteria easy to understand?
+    2.  Consistency: Do the artifacts align with each other and the original goal?
+    3.  Completeness: Are there any obvious gaps or missing details?
+    4.  Correctness: Is the format of stories and criteria correct? Is the classification accurate?
+    5.  Accuracy: If external context was provided (regulations, standards, thresholds), are these accurately reflected?
+    
+    SPECIAL MCP FEATURE: If you need additional information to properly validate (e.g., you need to verify a regulation, 
+    check a technical standard, or confirm a threshold), you can request it by including in your response:
+    NEED_MORE_CONTEXT: <your specific question>
+    For example: "NEED_MORE_CONTEXT: What is the current WCAG 2.1 Level AA requirement for color contrast ratios?"
+
+    If everything is perfect, respond with a JSON object with a 'status' of 'APPROVED'.
+    If there are issues, respond with a JSON object with a 'status' of 'REVISION_NEEDED' and provide clear, specific 'feedback' on what needs to be fixed and which role is responsible (e.g., 'The user story about payments is unclear' or 'The acceptance criteria for login is missing an edge case').
+
+    Artifacts to Validate:
+    ---
+    {context}
+    ---
+  expected_output: "A single JSON object with a 'status' key ('APPROVED' or 'REVISION_NEEDED') and an optional 'feedback' key. If you need more information, include 'NEED_MORE_CONTEXT: <question>' before the JSON."
+  agent: "validator_and_refiner"
+
+format_final_output:
+  description: |
+    Consolidate the approved and finalized artifacts below into a single, clean JSON string. The output should be a list of user story objects, where each object contains the story, its acceptance criteria, and its classification. Ensure the JSON is well-formatted.
+    
+    IMPORTANT: Preserve all specific values, citations, and references to external standards that were included in the user stories and acceptance criteria.
+
+    Final Artifacts:
+    ---
+    {context}
+    ---
+  expected_output: "A single, clean JSON string representing the list of finalized user story objects with all external references preserved."
+  agent: "output_formatter"

@@ -1,0 +1,30 @@
+Financial Transaction Compliance Reporting System
+
+We need to build a compliance reporting system for financial transactions that meets current regulatory requirements.
+
+Requirements:
+1. The system must comply with the latest FinCEN BSA/AML reporting thresholds
+   - Need to verify current CTR (Currency Transaction Report) threshold
+   - Need to verify current SAR (Suspicious Activity Report) requirements
+   
+2. Data retention must comply with current GDPR Article 5 requirements
+   - Check current retention periods for financial data
+   - Verify right-to-erasure exceptions for compliance records
+
+3. The system should follow industry best practices for similar compliance platforms
+   - Research what features are standard in compliance management systems
+   - Look up common integration patterns with banking systems
+
+4. API integration requirements:
+   - Must support SWIFT message formats (check latest version)
+   - Should integrate with OFAC screening (verify current API standards)
+
+5. Reporting formats must match current regulatory submission requirements
+   - Verify FinCEN BSA E-Filing System current XML schema version
+   - Check if new reporting fields have been added in recent updates
+
+6. Cross-reference with our internal compliance documentation
+   - Review existing compliance policies
+   - Ensure consistency with current corporate standards
+
+Note: This system will be used by our compliance team to monitor and report on high-value transactions. Accuracy of regulatory requirements is critical.

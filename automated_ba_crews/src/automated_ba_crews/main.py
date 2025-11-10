@@ -1,14 +1,13 @@
 import sys
 import json
 from conditional_crew import CustomWorkflow
+from mcp_context_gatherer import MCPContextGatherer
 from dotenv import load_dotenv
 load_dotenv()
 
 
 def main():
-    # --- Input Requirement ---
-    # This is the raw business requirement text that will be processed.
-    raw_requirement_text_file =  input("Please enter the file path: ")
+    raw_requirement_text_file =  input("Please enter the file path: ") # raw business requirement
     try:
         with open(raw_requirement_text_file, 'r', encoding='utf-8') as file:
             raw_requirement_text = file.read()
@@ -25,10 +24,36 @@ def main():
     print(raw_requirement_text)
     print("-----------------------------------------------")
 
-    # --- Execute Workflow ---
+    # MCP Context Gathering Phase
+    print("\n")
+    print("Starting MCP Context Gathering Phase")
+    enable_mcp = input("Enable MCP context gathering? (y/n, default=y): ").strip().lower()
+    
+    if enable_mcp != 'n':
+        try:
+            mcp_gatherer = MCPContextGatherer()
+            enriched_requirement = mcp_gatherer.gather_context(raw_requirement_text)
+            print("\n Context gathering complete!")
+            print("\n Enriched Requirement Preview:")
+            print("=" * 50)
+            #print(enriched_requirement[:500] + "..." if len(enriched_requirement) > 500 else enriched_requirement)
+            print(enriched_requirement)
+            print("=" * 50)
+            
+            # Use enriched requirement for workflow
+            requirement_to_process = enriched_requirement
+        except Exception as e:
+            print(f"\n MCP context gathering failed: {e}")
+            print("Continuing with original requirement...")
+            requirement_to_process = raw_requirement_text
+    else:
+        print("Skipping MCP context gathering...")
+        requirement_to_process = raw_requirement_text
 
+    # --- Execute Workflow ---
+    print("\n🤖 Starting CrewAI Agent Workflow...")
     workflow = CustomWorkflow()
-    final_result_str = workflow.run(raw_requirement_text)
+    final_result_str = workflow.run(requirement_to_process)
 
     # --- Display Final Output ---
     print("\n\n===============================================")
@@ -50,38 +75,7 @@ def main():
         print("Could not parse the final output as JSON. Displaying raw output:")
         print(final_result_str)
         with open('business_requirement.txt', 'w') as f:
-            f.write(final_json)
+            f.write(final_result_str)
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-    """
-    We need a mobile app for food delivery that allows users to:
-    - Browse restaurants by cuisine type
-    - Place orders with custom instructions
-    - Track delivery in real-time
-    - Rate and review their experience
-    - Save favorite restaurants for quick reordering
-    """
-
-    """
-    We are building a new feature for our e-commerce platform called "Wishlist".
-    A user should be able to add products to their personal wishlist.
-    They should also be able to view their wishlist and remove items from it.
-    The wishlist needs to be saved to their account so they can see it
-    when they log in again later. We also want to eventually add a "share wishlist"
-    feature, but that's for a future release. For now, just focus on the core
-    add, view, and remove functionality. The system must also be secure and
-    ensure that users can only see their own wishlists.
-    """
-
-    """
-    I want the creation of event on calender could be shared with a specific gorup in my organization with invitation, minimal functionality is fine
-    """
-
-    

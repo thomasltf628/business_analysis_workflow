@@ -4,10 +4,20 @@ from ba_agents import BaAgents
 from ba_tasks import BaTasks
 
 class CustomWorkflow:
-    def __init__(self):
+    """
+    Enhanced workflow with MCP integration capabilities.
+    
+    New Features:
+    - Validator can request additional MCP context during validation
+    - Agents receive MCP-enriched context automatically
+    - Support for mid-workflow information gathering
+    """
+    
+    def __init__(self, enable_mcp_mid_workflow=True):
         self.agents = BaAgents()
         self.tasks = BaTasks()
         self.max_iterations = 3
+        self.enable_mcp_mid_workflow = enable_mcp_mid_workflow
 
     def run(self, raw_requirement_text):
         print("🚀 Starting Business Analysis Workflow...")
@@ -40,7 +50,7 @@ class CustomWorkflow:
                     return self._create_final_output(workflow_artifacts['classified_stories'])
                 else:
                     if iteration_count == self.max_iterations:
-                        print("Maximum iterations reached, exit with refinement needed result")
+                        print("⚠️ Maximum iterations reached, exit with refinement needed result")
                         break
                     print("⚠️ Validation issues found. Initiating refinement process...")
                     workflow_artifacts = self._execute_refinement_loop(validation_json, workflow_artifacts)
@@ -50,7 +60,7 @@ class CustomWorkflow:
                 print(f"Raw validation output received: {validation_result_str}")
                 break
         
-        print("🏁 Maximum iterations reached or unrecoverable error. Returning current artifacts.")
+        print("⏹ Maximum iterations reached or unrecoverable error. Returning current artifacts.")
         return self._create_final_output(workflow_artifacts.get('classified_stories'))
 
     def _execute_main_pipeline(self, artifacts):
@@ -85,11 +95,48 @@ class CustomWorkflow:
         return artifacts
 
     def _execute_validation(self, classified_stories):
-        return self._execute_crew(
+        """
+        Enhanced validation that can request additional MCP context if needed.
+        
+        The validator can include "NEED_MORE_CONTEXT: <query>" in its output
+        to trigger an MCP search for additional information.
+        """
+        validation_result = self._execute_crew(
             "Validating Artifacts",
             [self.agents.validator_and_refiner()],
             [self.tasks.validate_artifacts(context=classified_stories)]
         )
+        
+        # Check if validator requested more context (only if MCP is enabled)
+        if self.enable_mcp_mid_workflow and "NEED_MORE_CONTEXT:" in validation_result:
+            print("\n🔍 Validator requesting additional context from MCP...")
+            try:
+                from mcp_context_gatherer import MCPAwareAgent
+                # Extract the query from validation result
+                query_start = validation_result.find("NEED_MORE_CONTEXT:") + len("NEED_MORE_CONTEXT:")
+                query_end = validation_result.find("\n", query_start)
+                if query_end == -1:
+                    query_end = len(validation_result)
+                query = validation_result[query_start:query_end].strip()
+                
+                print(f"📊 Fetching: {query}")
+                additional_context = MCPAwareAgent.request_additional_context(query)
+                
+                # Re-validate with additional context
+                print("🔄 Re-validating with additional context...")
+                enhanced_context = f"{classified_stories}\n\n--- Additional Context from MCP ---\n{additional_context}"
+                validation_result = self._execute_crew(
+                    "Re-Validating with Additional Context",
+                    [self.agents.validator_and_refiner()],
+                    [self.tasks.validate_artifacts(context=enhanced_context)]
+                )
+            except ImportError:
+                print("⚠️ MCP module not available, continuing with original validation")
+            except Exception as e:
+                print(f"⚠️ Could not fetch additional context: {e}")
+                # Continue with original validation
+        
+        return validation_result
 
     def _execute_refinement_loop(self, validation_json, artifacts):
         feedback = validation_json.get('feedback', '')
@@ -165,4 +212,3 @@ class CustomWorkflow:
         )
         result = crew.kickoff()
         return str(result)
-
